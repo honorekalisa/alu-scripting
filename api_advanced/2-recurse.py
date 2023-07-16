@@ -1,28 +1,36 @@
 #!/usr/bin/python3
-"""Module for task 2"""
+"""Module for recurse function"""
+import requests
+
+headers = {'User-Agent': 'MyAPI/0.0.1'}
 
 
-def recurse(subreddit, hot_list=[], count=0, after=None):
-    """Queries the Reddit API and returns all hot posts
-    of the subreddit"""
-    import requests
+def recurse(subreddit, after="", hot_list=[], page_count=0):
 
-    sub_info = requests.get("https://www.reddit.com/r/{}/hot.json"
-                            .format(subreddit),
-                            params={"count": count, "after": after},
-                            headers={"User-Agent": "My-User-Agent"},
-                            allow_redirects=False)
-    if sub_info.status_code >= 400:
+    subreddit_url = "https://reddit.com/r/{}/hot.json".format(subreddit)
+
+    parameters = {'limit': 100, 'after': after}
+    response = requests.get(subreddit_url, headers=headers, params=parameters)
+
+    if response.status_code == 200:
+        json_data = response.json()
+
+        for child in json_data.get('data').get('children'):
+            title = child.get('data').get('title')
+            hot_list.append(title)
+
+        after = json_data.get('data').get('after')
+        if after is not None:
+
+            page_count += 1
+            return recurse(subreddit, after=after,
+                           hot_list=hot_list, page_count=page_count)
+        else:
+            return hot_list
+
+    else:
         return None
 
-    hot_l = hot_list + [child.get("data").get("title")
-                        for child in sub_info.json()
-                        .get("data")
-                        .get("children")]
 
-    info = sub_info.json()
-    if not info.get("data").get("after"):
-        return hot_l
-
-    return recurse(subreddit, hot_l, info.get("data").get("count"),
-                   info.get("data").get("after"))
+if __name__ == '__main__':
+    print(recurse("zerowastecz"))
