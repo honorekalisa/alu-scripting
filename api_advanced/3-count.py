@@ -29,7 +29,6 @@ def count_words(subreddit, word_list, after=None, counts=None):
         counts = {}
 
     if not articles:
-        # Print the sorted count of keywords
         for keyword, count in sorted(counts.items(), key=lambda x: (-x[1], x[0])):
             print(f"{keyword.lower()}: {count}")
         return
