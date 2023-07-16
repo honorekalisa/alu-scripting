@@ -4,6 +4,7 @@ import requests
 
 
 def count_words(subreddit, word_list, after=None, counts=None):
+    """ Recursively counts the number of occurrences of keywords """
     base_url = 'https://www.reddit.com/r/{}/hot.json'.format(subreddit)
     headers = {'User-Agent': 'Mozilla/5.0'}
 
