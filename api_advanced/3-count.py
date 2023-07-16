@@ -6,7 +6,7 @@ REDDIT = "https://www.reddit.com/"
 HEADERS = {'user-agent': 'my-app/0.0.1'}
 
 
-def count_words(subreddit, word_list, after="", word_dic={}):
+def count_words(subreddit, word_list, after=None, word_dic=None):
     """
     Returns a list containing the titles of all hot articles for a
     given subreddit. If no results are found for the given subreddit,
