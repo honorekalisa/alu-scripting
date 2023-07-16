@@ -4,7 +4,11 @@ import requests
 
 
 def count_words(subreddit, word_list, after=None, counts=None):
-    """ Recursively counts the number of occurrences of keywords """
+    """
+    Returns a list containing the titles of all hot articles for a
+    given subreddit. If no results are found for the given subreddit,
+    the function should return None.
+    """
     base_url = 'https://www.reddit.com/r/{}/hot.json'.format(subreddit)
     headers = {'User-Agent': 'Mozilla/5.0'}
 
